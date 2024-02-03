@@ -4,16 +4,24 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
+
+import java.util.UUID;
+
 @Entity
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class Card {
-    @EmbeddedId
+    @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(updatable = false, nullable = false)
     @Schema(description = "Generated identifier of a card", example = "6c10ad48-2bb8-4e2e-900a-21d62c00c07b", required = true)
-    private CardId id;
+    private UUID id;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
