@@ -2,19 +2,16 @@ package com.esgi.leitnersystem.application.service;
 
 import com.esgi.leitnersystem.domain.model.Card;
 import com.esgi.leitnersystem.domain.repository.CardRepository;
-import org.springframework.stereotype.Service;
 import java.util.List;
+import org.springframework.stereotype.Service;
 
 @Service
 public class CardService {
-    private final CardRepository cardRepository;
+  private final CardRepository cardRepository;
 
-    public CardService(CardRepository cardRepository) {
-        this.cardRepository = cardRepository;
-    }
+  public CardService(CardRepository cardRepository) {
+    this.cardRepository = cardRepository;
+  }
 
-    public List<Card> fetchAllCards() {
-        return cardRepository.findAll();
-    }
-
+  public List<Card> fetchAllCards() { return cardRepository.findAll(); }
 }
