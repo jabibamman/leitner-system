@@ -1,5 +1,6 @@
 package com.esgi.leitnersystem.infrastructure.web.controller;
 
+import com.esgi.leitnersystem.application.service.CardService;
 import org.springframework.web.bind.annotation.*;
 import com.esgi.leitnersystem.domain.model.Card;
 import com.esgi.leitnersystem.application.dto.CardUserData;
@@ -11,11 +12,15 @@ import java.util.Map;
 @RestController
 @RequestMapping("/cards")
 public class CardsController {
+    private final CardService cardService;
+
+    public CardsController(CardService cardService) {
+        this.cardService = cardService;
+    }
 
     @GetMapping
-    public ResponseEntity<List<Card>> getAllCards(@RequestParam(required = false) List<String> tags) {
-        //* TODO: list of cards */
-        return ResponseEntity.ok().body(List.of());
+    public ResponseEntity<List<Card>> getAllCards() {
+        return ResponseEntity.ok().body(cardService.fetchAllCards());
     }
 
     @PostMapping
