@@ -7,6 +7,7 @@ import com.esgi.leitnersystem.domain.model.Card;
 import com.esgi.leitnersystem.domain.repository.CardRepository;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -29,7 +30,7 @@ public class CardServiceTests {
     Card card2 = new Card();
     when(cardRepository.findAll()).thenReturn(Arrays.asList(card1, card2));
 
-    List<Card> cards = cardService.fetchAllCards();
+    List<Card> cards = cardService.fetchAllCards(Optional.empty());
 
     assertThat(cards).hasSize(2);
     verify(cardRepository, times(1)).findAll();
