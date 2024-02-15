@@ -1,8 +1,8 @@
-package com.esgi.leitnersystem.infrastructure.web.controller;
+package com.esgi.leitnersystem.presentation.controller;
 
-import com.esgi.leitnersystem.application.dto.CardUserData;
-import com.esgi.leitnersystem.application.service.CardService;
-import com.esgi.leitnersystem.domain.model.Card;
+import com.esgi.leitnersystem.infrastructure.dto.CardUserData;
+import com.esgi.leitnersystem.domain.card.CardService;
+import com.esgi.leitnersystem.domain.card.Card;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;

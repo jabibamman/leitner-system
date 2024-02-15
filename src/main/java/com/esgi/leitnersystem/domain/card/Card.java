@@ -1,5 +1,6 @@
-package com.esgi.leitnersystem.domain.model;
+package com.esgi.leitnersystem.domain.card;
 
+import com.esgi.leitnersystem.domain.category.Category;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 

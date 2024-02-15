@@ -1,4 +1,4 @@
-package com.esgi.leitnersystem.domain.repository;
+package com.esgi.leitnersystem.infrastructure.repository;
 
 import org.springframework.stereotype.Repository;
 

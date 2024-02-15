@@ -1,4 +1,4 @@
-package com.esgi.leitnersystem.domain.model;
+package com.esgi.leitnersystem.domain.category;
 /*
     Category:
       type: string

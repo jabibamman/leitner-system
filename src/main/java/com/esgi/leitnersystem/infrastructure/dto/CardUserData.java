@@ -1,4 +1,4 @@
-package com.esgi.leitnersystem.application.dto;
+package com.esgi.leitnersystem.infrastructure.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;

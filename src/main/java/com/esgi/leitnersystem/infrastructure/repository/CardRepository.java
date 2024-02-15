@@ -1,6 +1,6 @@
-package com.esgi.leitnersystem.domain.repository;
+package com.esgi.leitnersystem.infrastructure.repository;
 
-import com.esgi.leitnersystem.domain.model.Card;
+import com.esgi.leitnersystem.domain.card.Card;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

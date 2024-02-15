@@ -1,12 +1,11 @@
-package com.esgi.leitnersystem.application.service;
+package com.esgi.leitnersystem.domain.card;
 
-import com.esgi.leitnersystem.application.dto.CardUserData;
-import com.esgi.leitnersystem.domain.model.Card;
-import com.esgi.leitnersystem.domain.model.Category;
-import com.esgi.leitnersystem.domain.repository.CardRepository;
+import com.esgi.leitnersystem.infrastructure.dto.CardUserData;
+import com.esgi.leitnersystem.domain.card.Card;
+import com.esgi.leitnersystem.domain.category.Category;
+import com.esgi.leitnersystem.infrastructure.repository.CardRepository;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
 
 import org.springframework.stereotype.Service;
 
