@@ -7,7 +7,6 @@ import com.esgi.leitnersystem.domain.repository.CardRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
-
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,11 +26,11 @@ public class CardService {
   }
   public Card createCard(CardUserData cardUserData) {
     Card card = Card.builder()
-        .question(cardUserData.getQuestion())
-        .answer(cardUserData.getAnswer())
-        .tag(cardUserData.getTag())
-        .category(Category.FIRST)
-        .build();
+                    .question(cardUserData.getQuestion())
+                    .answer(cardUserData.getAnswer())
+                    .tag(cardUserData.getTag())
+                    .category(Category.FIRST)
+                    .build();
 
     return cardRepository.save(card);
   }
