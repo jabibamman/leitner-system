@@ -1,4 +1,4 @@
-package com.esgi.leitnersystem.application.service;
+package com.esgi.leitnersystem.domain.card;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
