@@ -36,4 +36,9 @@ public class CategoryService {
             default -> throw new IllegalArgumentException("Unknown category: " + currentCategory);
         };
     }
+
+    public Card demoteCardToFirst(Card card) {
+        card.setCategory(Category.FIRST);
+        return cardRepository.save(card);
+    }
 }

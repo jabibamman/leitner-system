@@ -18,6 +18,7 @@ public class CategoryServiceSteps {
     private CategoryService categoryService;
     private CardRepository cardRepository;
 
+
     @Given("a card in category {string}")
     public void a_card_in_category_first(String category) {
         card = new Card();
@@ -32,9 +33,24 @@ public class CategoryServiceSteps {
         card = categoryService.promoteCard(card);
     }
 
-    @Then("the card should be promoted to category SECOND")
-    public void the_card_should_be_promoted_to_category_second() {
-        assertEquals(Category.SECOND, card.getCategory());
+    @Then("the card should be promoted to category {string}")
+    public void the_card_should_be_promoted_to_category(String expectedCategory) {
+        assertEquals(Category.valueOf(expectedCategory), card.getCategory());
+    }
+
+    @When("the card is answered incorrectly")
+    public void the_card_is_answered_incorrectly() {
+        card = categoryService.demoteCardToFirst(card);
+    }
+
+    @Then("the card should be demoted to category {string}")
+    public void the_card_should_be_demoted_to_category(String expectedCategory) {
+        assertEquals(Category.valueOf(expectedCategory), card.getCategory());
+    }
+    
+    @Then("the card should be marked as done")
+    public void the_card_should_be_marked_as_done() {
+        assertEquals(Category.DONE, card.getCategory());
     }
 
 }
