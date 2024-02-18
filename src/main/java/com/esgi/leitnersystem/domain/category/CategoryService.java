@@ -1,0 +1,43 @@
+package com.esgi.leitnersystem.domain.category;
+
+import com.esgi.leitnersystem.domain.card.Card;
+import com.esgi.leitnersystem.infrastructure.repository.CardRepository;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class CategoryService {
+
+  private final CardRepository cardRepository;
+
+  @Autowired
+  public CategoryService(CardRepository cardRepository) {
+    this.cardRepository = cardRepository;
+  }
+
+  public Card promoteCard(Card card) {
+    Category currentCategory = card.getCategory();
+    Category nextCategory = determineNextCategory(currentCategory);
+    card.setCategory(nextCategory);
+    return cardRepository.save(card);
+  }
+
+  private Category determineNextCategory(Category currentCategory) {
+    return switch (currentCategory) {
+            case FIRST -> Category.SECOND;
+            case SECOND -> Category.THIRD;
+            case THIRD -> Category.FOURTH;
+            case FOURTH -> Category.FIFTH;
+            case FIFTH -> Category.SIXTH;
+            case SIXTH -> Category.SEVENTH;
+            case SEVENTH, DONE -> Category.DONE;
+            default -> throw new IllegalArgumentException("Unknown category: " + currentCategory);
+        };
+    }
+
+    public Card demoteCardToFirst(Card card) {
+        card.setCategory(Category.FIRST);
+        return cardRepository.save(card);
+    }
+}
