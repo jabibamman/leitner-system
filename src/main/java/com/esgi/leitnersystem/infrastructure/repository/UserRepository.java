@@ -10,9 +10,6 @@ public interface UserRepository extends JpaRepository<UserEntity, String> {
   @Query("SELECT user FROM UserEntity user WHERE user.username = :username AND user.password = :password")
   UserEntity login(String username, String password);
 
-  @Query("SELECT user FROM UserEntity user WHERE user.username = :username")
-  UserEntity findByUsername(String username);
-
   @Query("DELETE FROM UserEntity user WHERE user.id = :userId")
   void deleteByUserId(String userId);
 }

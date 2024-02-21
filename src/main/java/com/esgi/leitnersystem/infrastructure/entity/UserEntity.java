@@ -34,4 +34,10 @@ public class UserEntity {
   @Schema(description = "The password of the user",
       example = "password1234", required = true)
   private String password;
+
+  public UserEntity(String username, String password) {
+    this.id = UUID.randomUUID();
+    this.username = username;
+    this.password = password;
+  }
 }
