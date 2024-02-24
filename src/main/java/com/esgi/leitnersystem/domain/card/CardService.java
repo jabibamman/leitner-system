@@ -1,6 +1,5 @@
 package com.esgi.leitnersystem.domain.card;
 
-import com.esgi.leitnersystem.domain.card.Card;
 import com.esgi.leitnersystem.domain.category.Category;
 import com.esgi.leitnersystem.infrastructure.dto.CardUserData;
 import com.esgi.leitnersystem.infrastructure.repository.CardRepository;

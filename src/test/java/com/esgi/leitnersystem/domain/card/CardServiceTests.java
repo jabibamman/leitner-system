@@ -3,8 +3,6 @@ package com.esgi.leitnersystem.domain.card;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import com.esgi.leitnersystem.domain.card.Card;
-import com.esgi.leitnersystem.domain.card.CardService;
 import com.esgi.leitnersystem.infrastructure.repository.CardRepository;
 import java.util.Arrays;
 import java.util.List;
