@@ -1,11 +1,12 @@
 package com.esgi.leitnersystem.domain.user;
 
-import com.esgi.leitnersystem.infrastructure.entity.UserEntity;
-import com.esgi.leitnersystem.infrastructure.repository.UserRepository;
-import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import com.esgi.leitnersystem.infrastructure.entity.UserEntity;
+import com.esgi.leitnersystem.infrastructure.repository.UserRepository;
+import org.junit.jupiter.api.Test;
 
 public class UserServiceTests {
   @Test

@@ -7,8 +7,10 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends JpaRepository<UserEntity, String> {
-  @Query("SELECT user FROM UserEntity user WHERE user.username = :username AND user.password = :password")
-  UserEntity login(String username, String password);
+  @Query(
+      "SELECT user FROM UserEntity user WHERE user.username = :username AND user.password = :password")
+  UserEntity
+  login(String username, String password);
 
   @Query("DELETE FROM UserEntity user WHERE user.id = :userId")
   void deleteByUserId(String userId);
