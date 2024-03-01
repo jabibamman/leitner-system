@@ -45,7 +45,7 @@ The application will be available at http://localhost:8080.
 
 ## API Documentation
 
-The API documentation is automatically generated and can be accessed via Swagger UI at http://localhost:8080/swagger-ui.html. 
+The API documentation is automatically generated and can be accessed via Swagger UI at http://localhost:8080/swagger-ui.html.
 This provides an interactive UI to send requests and view responses from the API endpoints.
 
 ## Running Tests
