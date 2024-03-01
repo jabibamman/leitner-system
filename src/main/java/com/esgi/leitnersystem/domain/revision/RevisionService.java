@@ -15,11 +15,11 @@ import java.time.temporal.ChronoUnit;
 
 @Service
 public class RevisionService {
-    private final CardRevisionRepository cardRevisionRepository;
+    private final CardRevisionRepositoryPort cardRevisionRepository;
     private final CategoryService categoryService;
 
     @Autowired
-    public RevisionService(CardRevisionRepository cardRevisionRepository,
+    public RevisionService(CardRevisionRepositoryPort cardRevisionRepository,
                            CategoryService categoryService) {
         this.cardRevisionRepository = cardRevisionRepository;
         this.categoryService = categoryService;
@@ -29,7 +29,7 @@ public class RevisionService {
         if (card.getCategory() == Category.DONE) {
             return false;
         }
-        var lastRevision = cardRevisionRepository.findTopByCardIdOrderByRevisionDateDesc(card.getId());
+        var lastRevision = cardRevisionRepository.findLatestRevisionByCardId(card.getId());
         return lastRevision.map(revision -> shouldBeReviewed(card, revision, date))
                 .orElse(true);
     }

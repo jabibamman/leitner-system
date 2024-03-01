@@ -17,13 +17,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CardService {
-  private final CardRepository cardRepository;
+  private final CardRepositoryPort cardRepository;
   private final CategoryService categoryService;
   private final QuizService quizService;
   private final RevisionService revisionService;
 
   @Autowired
-    public CardService(CardRepository cardRepository, CategoryService categoryService, QuizService quizService, RevisionService revisionService) {
+    public CardService(CardRepositoryPort cardRepository, CategoryService categoryService, QuizService quizService, RevisionService revisionService) {
         this.cardRepository = cardRepository;
         this.categoryService = categoryService;
         this.quizService = quizService;
