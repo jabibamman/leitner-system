@@ -117,7 +117,8 @@ public class CardServiceTests {
     List<Card> expectedCards = List.of(new Card(), new Card());
     when(cardRepository.findAll()).thenReturn(expectedCards);
 
-    List<Card> actualCards = cardService.getCardsForQuizz(LocalDate.parse(date));
+    List<Card> actualCards =
+        cardService.getCardsForQuizz(LocalDate.parse(date));
 
     assertEquals(expectedCards, actualCards);
   }
@@ -126,7 +127,8 @@ public class CardServiceTests {
   void getCardsForQuizz_WithPastDate_ShouldReturnEmptyList() {
     String date = LocalDate.now().minusDays(1).toString();
 
-    List<Card> actualCards = cardService.getCardsForQuizz(LocalDate.parse(date));
+    List<Card> actualCards =
+        cardService.getCardsForQuizz(LocalDate.parse(date));
 
     assertEquals(0, actualCards.size());
   }

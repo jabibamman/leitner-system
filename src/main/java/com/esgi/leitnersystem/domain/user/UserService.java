@@ -3,11 +3,10 @@ package com.esgi.leitnersystem.domain.user;
 import com.esgi.leitnersystem.infrastructure.entity.UserEntity;
 import com.esgi.leitnersystem.infrastructure.exception.UnauthorizedException;
 import com.esgi.leitnersystem.infrastructure.exception.UserAlreadyExistsException;
+import java.util.logging.Logger;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.logging.Logger;
 
 @Service
 public class UserService {
@@ -20,7 +19,8 @@ public class UserService {
 
   public UserEntity login(String username, String password) {
     return userRepository.login(username, password)
-            .orElseThrow(() -> new UnauthorizedException("Invalid username or password"));
+        .orElseThrow(
+            () -> new UnauthorizedException("Invalid username or password"));
   }
 
   @SneakyThrows

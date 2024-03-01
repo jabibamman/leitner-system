@@ -23,26 +23,29 @@ public class CardService {
   private final RevisionService revisionService;
 
   @Autowired
-    public CardService(CardRepositoryPort cardRepository, CategoryService categoryService, QuizService quizService, RevisionService revisionService) {
-        this.cardRepository = cardRepository;
-        this.categoryService = categoryService;
-        this.quizService = quizService;
-        this.revisionService = revisionService;
+  public CardService(CardRepositoryPort cardRepository,
+                     CategoryService categoryService, QuizService quizService,
+                     RevisionService revisionService) {
+    this.cardRepository = cardRepository;
+    this.categoryService = categoryService;
+    this.quizService = quizService;
+    this.revisionService = revisionService;
   }
 
   public Card createCard(CardUserData cardUserData) {
     var card = Card.builder()
-            .question(cardUserData.getQuestion())
-            .answer(cardUserData.getAnswer())
-            .tag(cardUserData.getTag())
-            .category(Category.FIRST)
-            .build();
+                   .question(cardUserData.getQuestion())
+                   .answer(cardUserData.getAnswer())
+                   .tag(cardUserData.getTag())
+                   .category(Category.FIRST)
+                   .build();
 
     return cardRepository.save(card);
   }
 
   public List<Card> fetchAllCards(Optional<List<String>> tags) {
-    return tags.map(cardRepository::findByTagsIn).orElseGet(cardRepository::findAll);
+    return tags.map(cardRepository::findByTagsIn)
+        .orElseGet(cardRepository::findAll);
   }
 
   public List<Card> getCardsForQuizz(LocalDate date) {
@@ -50,9 +53,12 @@ public class CardService {
   }
 
   @Transactional
-  public void processCardAnswer(UUID cardId, boolean isValid) throws CardNotFoundException {
-    var card = cardRepository.findById(cardId)
-            .orElseThrow(() -> new CardNotFoundException("Card with ID " + cardId + " not found"));
+  public void processCardAnswer(UUID cardId, boolean isValid)
+      throws CardNotFoundException {
+    var card = cardRepository.findById(cardId).orElseThrow(
+        ()
+            -> new CardNotFoundException("Card with ID " + cardId +
+                                         " not found"));
 
     if (isValid) {
       categoryService.promoteCard(card);
@@ -72,7 +78,6 @@ public class CardService {
   }
 
   private void recordCardRevision(Card card, boolean isValid) {
-     revisionService.recordCardRevision(card, isValid);
+    revisionService.recordCardRevision(card, isValid);
   }
-
 }

@@ -12,7 +12,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,9 +41,12 @@ public class UserController {
                )
   @ApiResponse(responseCode = "401", description = "Unauthorized",
                content = @Content())
-  public ResponseEntity<User> login(@RequestBody UserLoginDto loginBody) {
-    UserEntity authenticated = userService.login(loginBody.getUsername(), loginBody.getPassword());
-    User user = new User(authenticated.getUsername(), authenticated.getPassword());
+  public ResponseEntity<User>
+  login(@RequestBody UserLoginDto loginBody) {
+    UserEntity authenticated =
+        userService.login(loginBody.getUsername(), loginBody.getPassword());
+    User user =
+        new User(authenticated.getUsername(), authenticated.getPassword());
     return new ResponseEntity<>(user, HttpStatus.OK);
   }
 
