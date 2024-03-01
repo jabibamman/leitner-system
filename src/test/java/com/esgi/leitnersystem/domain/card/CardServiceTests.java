@@ -1,5 +1,9 @@
 package com.esgi.leitnersystem.domain.card;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.*;
+
 import com.esgi.leitnersystem.domain.card.Card;
 import com.esgi.leitnersystem.domain.card.CardService;
 import com.esgi.leitnersystem.domain.category.CategoryService;
@@ -7,32 +11,25 @@ import com.esgi.leitnersystem.infrastructure.dto.CardUserData;
 import com.esgi.leitnersystem.infrastructure.exception.CardNotFoundException;
 import com.esgi.leitnersystem.infrastructure.repository.CardRepository;
 import com.esgi.leitnersystem.infrastructure.repository.CardRevisionRepository;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 public class CardServiceTests {
-  @Mock
-  private CardRepository cardRepository;
+  @Mock private CardRepository cardRepository;
 
-  @Mock
-  private CardRevisionRepository cardRevisionRepository;
+  @Mock private CardRevisionRepository cardRevisionRepository;
 
-  @Mock
-  private CategoryService categoryService;
+  @Mock private CategoryService categoryService;
 
-  @InjectMocks
-  private CardService cardService;
+  @InjectMocks private CardService cardService;
 
   @BeforeEach
   public void setUp() {
@@ -82,11 +79,13 @@ public class CardServiceTests {
     boolean isValid = true;
     when(cardRepository.findById(cardId)).thenReturn(Optional.empty());
 
-    assertThrows(CardNotFoundException.class, () -> cardService.processCardAnswer(cardId, isValid));
+    assertThrows(CardNotFoundException.class,
+                 () -> cardService.processCardAnswer(cardId, isValid));
   }
 
   @Test
-  void processCardAnswer_WhenCardFoundAndValid_ShouldPromoteCard() throws CardNotFoundException {
+  void processCardAnswer_WhenCardFoundAndValid_ShouldPromoteCard()
+      throws CardNotFoundException {
     UUID cardId = UUID.randomUUID();
     boolean isValid = true;
     Card card = new Card();
@@ -99,7 +98,8 @@ public class CardServiceTests {
   }
 
   @Test
-  void processCardAnswer_WhenCardFoundAndInvalid_ShouldDemoteCard() throws CardNotFoundException {
+  void processCardAnswer_WhenCardFoundAndInvalid_ShouldDemoteCard()
+      throws CardNotFoundException {
     UUID cardId = UUID.randomUUID();
     boolean isValid = false;
     Card card = new Card();
