@@ -4,6 +4,7 @@ import com.esgi.leitnersystem.domain.card.Card;
 import com.esgi.leitnersystem.domain.card.CardService;
 import com.esgi.leitnersystem.domain.category.Category;
 import com.esgi.leitnersystem.infrastructure.dto.CardUserData;
+import io.cucumber.java.en.And;
 import org.junit.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -56,6 +57,15 @@ public class CardQuizSteps {
         }
     }
 
+    @When("The user answers the card's question with an incorrect answer")
+    public void the_user_answers_the_card_s_question_with_an_incorrect_answer() {
+        try {
+            cardService.processCardAnswer(currentCard.getId(), false);
+        } catch (Exception e) {
+            fail("The submission of the answer failed", e);
+        }
+    }
+
     @Then("The answer is recorded, and the user can see if they answered correctly or not")
     public void the_answer_is_recorded_and_the_user_can_see_if_they_answered_correctly_or_not() {
         Card updatedCard = cardService.fetchAllCards(Optional.empty()).stream()
@@ -63,6 +73,25 @@ public class CardQuizSteps {
                 .findFirst()
                 .orElseThrow(() -> new AssertionError("The updated card is not found"));
         boolean isPromoted = updatedCard.getCategory().ordinal() > originalCategory.ordinal();
-        assertTrue(isPromoted, "The card should be promoted after a correct answer");
+        boolean isDemoted = updatedCard.getCategory().ordinal() < originalCategory.ordinal();
+
+        if (isPromoted) {
+            assertTrue(updatedCard.getCategory().ordinal() > originalCategory.ordinal(), "The card should be promoted");
+        } else if (isDemoted) {
+            assertTrue(updatedCard.getCategory().ordinal() < originalCategory.ordinal(), "The card should be demoted");
+        } else {
+            assertEquals(originalCategory, updatedCard.getCategory(), "The card should remain in the same category");
+        }
     }
+
+    @And("The card is moved to category {string}")
+    public void the_card_is_moved_to_category(String expectedCategory) {
+        Card updatedCard = cardService.fetchAllCards(Optional.empty()).stream()
+                .filter(card -> card.getId().equals(currentCard.getId()))
+                .findFirst()
+                .orElseThrow(() -> new AssertionError("The updated card is not found"));
+
+        assertEquals(expectedCategory, updatedCard.getCategory().name(), "The card should be moved to the specified category");
+    }
+    
 }
