@@ -40,4 +40,16 @@ public class CategoryService {
         card.setCategory(Category.FIRST);
         return cardRepository.save(card);
     }
+
+    public int getDaysUntilNextRevision(Category category) {
+        return switch (category) {
+            case FIRST -> 1;
+            case SECOND -> 2;
+            case THIRD -> 4;
+            case FOURTH -> 8;
+            case FIFTH -> 16;
+            case SIXTH -> 32;
+            case SEVENTH, DONE -> 64;
+        };
+    }
 }

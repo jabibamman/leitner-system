@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -102,7 +103,14 @@ public class CardsController {
       })
   public ResponseEntity<List<Card>>
   getCardsForQuizz(@RequestParam(required = false) String date) {
-    List<Card> cards = cardService.getCardsForQuizz(date);
+    LocalDate parsedDate;
+    if (date != null && !date.isEmpty()) {
+      parsedDate = LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE);
+    } else {
+      parsedDate = LocalDate.now();
+    }
+
+    List<Card> cards = cardService.getCardsForQuizz(parsedDate);
     return ResponseEntity.ok().body(cards);
   }
 
@@ -125,7 +133,7 @@ public class CardsController {
             @ApiResponse(responseCode = "400", description = "Bad request")
       })
   public ResponseEntity<Void>
-  answerCard(@PathVariable UUID cardId, @RequestBody AnswerDTO answerDTO) {
+  answerCard(@PathVariable UUID cardId, @RequestBody @Valid AnswerDTO answerDTO) {
     try {
       cardService.processCardAnswer(cardId, answerDTO.getIsValid());
       return ResponseEntity.noContent().build();
