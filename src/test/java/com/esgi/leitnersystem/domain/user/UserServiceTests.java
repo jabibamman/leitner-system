@@ -67,10 +67,10 @@ public class UserServiceTests {
     UserRepositoryPort userRepository = mock(UserRepositoryPort.class);
     UserService userService = new UserService(userRepository);
 
-    when(userRepository.findByUsername(user.getUsername())).thenReturn(Optional.of(user));
+    when(userRepository.findByUsername(user.getUsername()))
+        .thenReturn(Optional.of(user));
     assertThrows(UserAlreadyExistsException.class, () -> {
-    userService.register(user.getUsername(), user.getPassword());
+      userService.register(user.getUsername(), user.getPassword());
     });
   }
-
 }
