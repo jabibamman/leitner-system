@@ -1,15 +1,13 @@
 package com.esgi.leitnersystem.domain.card;
 
+import static com.esgi.leitnersystem.domain.card.Card.*;
+
 import com.esgi.leitnersystem.domain.category.Category;
 import com.esgi.leitnersystem.domain.category.CategoryService;
 import com.esgi.leitnersystem.infrastructure.dto.CardUserData;
 import com.esgi.leitnersystem.infrastructure.exception.CardNotFoundException;
 import com.esgi.leitnersystem.infrastructure.repository.CardRepository;
 import com.esgi.leitnersystem.infrastructure.repository.CardRevisionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -18,8 +16,9 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-
-import static com.esgi.leitnersystem.domain.card.Card.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CardService {
@@ -27,9 +26,10 @@ public class CardService {
   private CardRevisionRepository cardRevisionRepository;
   private final CategoryService categoryService;
 
-
   @Autowired
-  public CardService(CardRepository cardRepository, CardRevisionRepository cardRevisionRepository, CategoryService categoryService) {
+  public CardService(CardRepository cardRepository,
+                     CardRevisionRepository cardRevisionRepository,
+                     CategoryService categoryService) {
     this.cardRepository = cardRepository;
     this.cardRevisionRepository = cardRevisionRepository;
     this.categoryService = categoryService;
@@ -44,11 +44,11 @@ public class CardService {
 
   public Card createCard(CardUserData cardUserData) {
     Card card = builder()
-            .question(cardUserData.getQuestion())
-            .answer(cardUserData.getAnswer())
-            .tag(cardUserData.getTag())
-            .category(Category.FIRST)
-            .build();
+                    .question(cardUserData.getQuestion())
+                    .answer(cardUserData.getAnswer())
+                    .tag(cardUserData.getTag())
+                    .category(Category.FIRST)
+                    .build();
 
     return cardRepository.save(card);
   }
@@ -66,39 +66,52 @@ public class CardService {
 
     List<Card> allCards = cardRepository.findAll();
 
-    if(date == null || date.isEmpty() || date.isBlank()) return allCards;
+    if (date == null || date.isEmpty() || date.isBlank())
+      return allCards;
 
-    if(!isValidDateFormat(date)) return List.of();
+    if (!isValidDateFormat(date))
+      return List.of();
 
     LocalDate formattedDate = LocalDate.now();
 
-    if (LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE).isBefore(formattedDate)) {
+    if (LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE)
+            .isBefore(formattedDate)) {
       return List.of();
     }
 
-    List<CardRevision> revisionsForDate = cardRevisionRepository.findByRevisionDate(date);
+    List<CardRevision> revisionsForDate =
+        cardRevisionRepository.findByRevisionDate(date);
     List<UUID> cardIdsRevisedToday = revisionsForDate.stream()
-            .map(CardRevision::getCardId)
-            .collect(Collectors.toList());
-    List<Card> cardsToBeReviewed = allCards.stream()
-            .filter(card -> !cardIdsRevisedToday.contains(card.getId()) || shouldBeReviewed(card, date))
+                                         .map(CardRevision::getCardId)
+                                         .collect(Collectors.toList());
+    List<Card> cardsToBeReviewed =
+        allCards.stream()
+            .filter(card
+                    -> !cardIdsRevisedToday.contains(card.getId()) ||
+                           shouldBeReviewed(card, date))
             .collect(Collectors.toList());
 
     return cardsToBeReviewed;
   }
 
   private boolean shouldBeReviewed(Card card, String dateString) {
-    CardRevision lastRevision = cardRevisionRepository.findTopByCardIdOrderByRevisionDateDesc(card.getId());
+    CardRevision lastRevision =
+        cardRevisionRepository.findTopByCardIdOrderByRevisionDateDesc(
+            card.getId());
     if (lastRevision == null) {
       return true;
     }
 
-    LocalDate lastRevisionDate = LocalDate.parse(lastRevision.getRevisionDate(), DateTimeFormatter.ISO_LOCAL_DATE);
-    LocalDate currentDate = LocalDate.parse(dateString, DateTimeFormatter.ISO_LOCAL_DATE);
+    LocalDate lastRevisionDate = LocalDate.parse(
+        lastRevision.getRevisionDate(), DateTimeFormatter.ISO_LOCAL_DATE);
+    LocalDate currentDate =
+        LocalDate.parse(dateString, DateTimeFormatter.ISO_LOCAL_DATE);
 
     if (lastRevisionDate.isBefore(currentDate)) {
-      long daysSinceLastRevision = ChronoUnit.DAYS.between(lastRevisionDate, currentDate);
-      int expectedDaysUntilNextRevision = getDaysUntilNextRevision(card.getCategory());
+      long daysSinceLastRevision =
+          ChronoUnit.DAYS.between(lastRevisionDate, currentDate);
+      int expectedDaysUntilNextRevision =
+          getDaysUntilNextRevision(card.getCategory());
       return daysSinceLastRevision >= expectedDaysUntilNextRevision;
     }
 
@@ -107,27 +120,28 @@ public class CardService {
 
   private int getDaysUntilNextRevision(Category category) {
     switch (category) {
-      case FIRST:
-        return 1;
-      case SECOND:
-        return 2;
-      case THIRD:
-        return 4;
-      case FOURTH:
-        return 8;
-      case FIFTH:
-        return 16;
-      case SIXTH:
-        return 32;
-      case SEVENTH:
-        return 64;
-      default:
-        return Integer.MAX_VALUE;
+    case FIRST:
+      return 1;
+    case SECOND:
+      return 2;
+    case THIRD:
+      return 4;
+    case FOURTH:
+      return 8;
+    case FIFTH:
+      return 16;
+    case SIXTH:
+      return 32;
+    case SEVENTH:
+      return 64;
+    default:
+      return Integer.MAX_VALUE;
     }
   }
 
   @Transactional
-  public void processCardAnswer(UUID cardId, boolean isValid) throws CardNotFoundException {
+  public void processCardAnswer(UUID cardId, boolean isValid)
+      throws CardNotFoundException {
     Optional<Card> cardOptional = cardRepository.findById(cardId);
     if (!cardOptional.isPresent()) {
       throw new CardNotFoundException("Card with ID " + cardId + " not found");
@@ -140,10 +154,10 @@ public class CardService {
       categoryService.demoteCardToFirst(card);
     }
 
-    String formattedDate = LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
-    CardRevision revision = new CardRevision(card.getId(), formattedDate, isValid);
+    String formattedDate =
+        LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
+    CardRevision revision =
+        new CardRevision(card.getId(), formattedDate, isValid);
     cardRevisionRepository.save(revision);
   }
-
 }
-

@@ -26,9 +26,9 @@ public class Card {
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
   @Schema(
-          description =
-                  "Category of card indicating how many times you answered it and appearance frequency",
-          example = "FIRST", required = true)
+      description =
+          "Category of card indicating how many times you answered it and appearance frequency",
+      example = "FIRST", required = true)
   private Category category;
 
   @Column(nullable = false)
