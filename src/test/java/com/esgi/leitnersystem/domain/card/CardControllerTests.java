@@ -3,10 +3,10 @@ package com.esgi.leitnersystem.domain.card;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
-import com.esgi.leitnersystem.domain.card.Card;
-import com.esgi.leitnersystem.domain.card.CardService;
 import com.esgi.leitnersystem.infrastructure.dto.CardUserData;
 import com.esgi.leitnersystem.presentation.controller.CardsController;
+
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -46,7 +46,7 @@ public class CardControllerTests {
   public void getCardsForQuizz_WithValidDate_ShouldReturnCards() {
     String date = "2024-02-21";
     List<Card> expectedCards = Collections.singletonList(new Card());
-    when(cardService.getCardsForQuizz(date)).thenReturn(expectedCards);
+    when(cardService.getCardsForQuizz(LocalDate.parse(date))).thenReturn(expectedCards);
 
     List<Card> actualCards = cardsController.getCardsForQuizz(date).getBody();
 
@@ -66,7 +66,7 @@ public class CardControllerTests {
   @Test
   public void getCardsForQuizz_WithEmptyDate_ShouldReturnCards() {
     List<Card> expectedCards = Collections.singletonList(new Card());
-    when(cardService.getCardsForQuizz("")).thenReturn(expectedCards);
+    when(cardService.getCardsForQuizz( LocalDate.now())).thenReturn(expectedCards);
 
     List<Card> actualCards = cardsController.getCardsForQuizz("").getBody();
 
@@ -77,7 +77,7 @@ public class CardControllerTests {
   public void getCardsForQuizz_WithInvalidDate_ShouldReturnNoCards() {
     String invalidDate = "invalid-date";
     List<Card> expectedCards = Collections.emptyList();
-    when(cardService.getCardsForQuizz(invalidDate)).thenReturn(expectedCards);
+    when(cardService.getCardsForQuizz(LocalDate.now())).thenReturn(expectedCards);
 
     List<Card> actualCards =
         cardsController.getCardsForQuizz(invalidDate).getBody();
