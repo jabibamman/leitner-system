@@ -26,19 +26,19 @@ public class Card {
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
   @Schema(
-      description =
-          "Category of card indicating how many times you answered it and appearance frequency",
-      example = "FIRST", required = true)
+          description =
+                  "Category of card indicating how many times you answered it and appearance frequency",
+          example = "FIRST", required = true)
   private Category category;
 
   @Column(nullable = false)
-  @Schema(description = "Question to be asked to the user during a quizz",
+  @Schema(description = "Question to be asked to the user during a quiz",
           example = "What is pair programming?", required = true)
   private String question;
 
   @Column(nullable = false)
   @Schema(description = "Expected answer for the question",
-          example = "A practice to work in pair on same computer.",
+          example = "A practice to work in pairs on the same computer.",
           required = true)
   private String answer;
 
