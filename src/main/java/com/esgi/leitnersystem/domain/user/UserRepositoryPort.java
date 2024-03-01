@@ -6,7 +6,7 @@ import java.util.Optional;
 
 public interface UserRepositoryPort {
     Optional<UserEntity> findByUsername(String username);
-    UserEntity login(String username, String password);
+    Optional<UserEntity> login(String username, String password);
     UserEntity save(UserEntity user);
 
 }

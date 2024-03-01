@@ -22,10 +22,9 @@ public class UserRepositoryAdapter implements UserRepositoryPort {
     }
 
     @Override
-    public UserEntity login(String username, String password) {
-        return userRepository.login(username, password);
+    public Optional<UserEntity> login(String username, String password) {
+        return Optional.ofNullable(userRepository.login(username, password));
     }
-
     @Override
     public UserEntity save(UserEntity user) {
         return userRepository.save(user);

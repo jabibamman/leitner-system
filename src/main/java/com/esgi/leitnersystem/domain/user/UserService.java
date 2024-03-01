@@ -19,11 +19,8 @@ public class UserService {
   }
 
   public UserEntity login(String username, String password) {
-    var userEntity = userRepository.login(username, password);
-    if (userEntity == null) {
-      throw new UnauthorizedException("Invalid username or password");
-    }
-    return userEntity;
+    return userRepository.login(username, password)
+            .orElseThrow(() -> new UnauthorizedException("Invalid username or password"));
   }
 
   @SneakyThrows
