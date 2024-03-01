@@ -4,12 +4,16 @@ import com.esgi.leitnersystem.domain.user.User;
 import com.esgi.leitnersystem.domain.user.UserService;
 import com.esgi.leitnersystem.infrastructure.dto.UserLoginDto;
 import com.esgi.leitnersystem.infrastructure.dto.UserRegisterDto;
+import com.esgi.leitnersystem.infrastructure.entity.UserEntity;
+import com.esgi.leitnersystem.infrastructure.exception.UnauthorizedException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.http.HttpStatus;
@@ -38,17 +42,10 @@ public class UserController {
                )
   @ApiResponse(responseCode = "401", description = "Unauthorized",
                content = @Content())
-  public ResponseEntity<User>
-  login(@RequestBody UserLoginDto loginBody) {
-    try {
-      User logined =
-          userService.login(loginBody.getUsername(), loginBody.getPassword());
-      return new ResponseEntity<>(logined, HttpStatus.OK);
-    } catch (Exception e) {
-      Logger.getLogger(UserController.class.getName())
-          .log(Level.FINER, "Login failed: ", e);
-      return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-    }
+  public ResponseEntity<User> login(@RequestBody UserLoginDto loginBody) {
+    UserEntity authenticated = userService.login(loginBody.getUsername(), loginBody.getPassword());
+    User user = new User(authenticated.getUsername(), authenticated.getPassword());
+    return new ResponseEntity<>(user, HttpStatus.OK);
   }
 
   @PostMapping("/register")
@@ -68,6 +65,9 @@ public class UserController {
     try {
       User createdUser = userService.register(registerBody.getUsername(),
                                               registerBody.getPassword());
+
+      Logger.getLogger(UserController.class.getName())
+          .log(Level.INFO, "User created: " + createdUser);
       return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
     } catch (Exception e) {
       Logger.getLogger(UserController.class.getName())

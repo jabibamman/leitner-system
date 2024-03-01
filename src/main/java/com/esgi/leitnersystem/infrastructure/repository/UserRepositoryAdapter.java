@@ -1,39 +1,33 @@
 package com.esgi.leitnersystem.infrastructure.repository;
 
-import com.esgi.leitnersystem.domain.card.Card;
-import com.esgi.leitnersystem.domain.card.CardRepositoryPort;
-import com.esgi.leitnersystem.domain.card.CardRevision;
-import com.esgi.leitnersystem.domain.revision.CardRevisionRepositoryPort;
+import com.esgi.leitnersystem.domain.user.UserRepositoryPort;
+import com.esgi.leitnersystem.infrastructure.entity.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
-public class CardRevisionRepositoryAdapter implements CardRevisionRepositoryPort {
-    private final CardRevisionRepository cardRevisionRepository;
+public class UserRepositoryAdapter implements UserRepositoryPort {
+    private final UserRepository userRepository;
 
     @Autowired
-    public CardRevisionRepositoryAdapter(CardRevisionRepository cardRevisionRepository) {
-        this.cardRevisionRepository = cardRevisionRepository;
+    public UserRepositoryAdapter(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
-    public CardRevision save(CardRevision cardRevision) {
-        return cardRevisionRepository.save(cardRevision);
+    public Optional<UserEntity> findByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 
     @Override
-    public List<CardRevision> findByRevisionDate(LocalDate date) {
-        return cardRevisionRepository.findByRevisionDate(String.valueOf(date));
+    public UserEntity login(String username, String password) {
+        return userRepository.login(username, password);
     }
 
     @Override
-    public Optional<CardRevision> findLatestRevisionByCardId(UUID cardId) {
-        return cardRevisionRepository.findTopByCardIdOrderByRevisionDateDesc(cardId);
+    public UserEntity save(UserEntity user) {
+        return userRepository.save(user);
     }
 }

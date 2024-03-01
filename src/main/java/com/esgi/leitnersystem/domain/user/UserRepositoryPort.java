@@ -1,16 +1,12 @@
-package com.esgi.leitnersystem.domain.revision;
+package com.esgi.leitnersystem.domain.user;
 
-import com.esgi.leitnersystem.domain.card.CardRevision;
+import com.esgi.leitnersystem.infrastructure.entity.UserEntity;
 
-import java.time.LocalDate;
-import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
-public interface CardRevisionRepositoryPort {
-    CardRevision save(CardRevision cardRevision);
+public interface UserRepositoryPort {
+    Optional<UserEntity> findByUsername(String username);
+    UserEntity login(String username, String password);
+    UserEntity save(UserEntity user);
 
-    List<CardRevision> findByRevisionDate(LocalDate date);
-    Optional<CardRevision> findLatestRevisionByCardId(UUID cardId);
 }

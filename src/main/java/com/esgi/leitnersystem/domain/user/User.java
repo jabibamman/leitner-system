@@ -2,6 +2,8 @@ package com.esgi.leitnersystem.domain.user;
 
 import lombok.*;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @ToString
