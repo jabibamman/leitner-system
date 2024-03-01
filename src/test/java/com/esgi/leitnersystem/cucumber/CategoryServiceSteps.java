@@ -5,6 +5,7 @@ import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.Mockito.*;
 
 import com.esgi.leitnersystem.domain.card.Card;
+import com.esgi.leitnersystem.domain.card.CardRepositoryPort;
 import com.esgi.leitnersystem.domain.category.Category;
 import com.esgi.leitnersystem.domain.category.CategoryService;
 import com.esgi.leitnersystem.infrastructure.repository.CardRepository;
@@ -16,13 +17,13 @@ public class CategoryServiceSteps {
 
   private Card card;
   private CategoryService categoryService;
-  private CardRepository cardRepository;
+  private CardRepositoryPort cardRepository;
 
   @Given("a card in category {string}")
   public void a_card_in_category_first(String category) {
     card = new Card();
     card.setCategory(Category.valueOf(category));
-    cardRepository = mock(CardRepository.class);
+    cardRepository = mock(CardRepositoryPort.class);
     when(cardRepository.save(any(Card.class))).then(returnsFirstArg());
     categoryService = new CategoryService(cardRepository);
   }

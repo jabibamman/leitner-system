@@ -1,6 +1,7 @@
 package com.esgi.leitnersystem.domain.category;
 
 import com.esgi.leitnersystem.domain.card.Card;
+import com.esgi.leitnersystem.domain.card.CardRepositoryPort;
 import com.esgi.leitnersystem.infrastructure.repository.CardRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +10,10 @@ import org.springframework.stereotype.Service;
 @Service
 public class CategoryService {
 
-  private final CardRepository cardRepository;
+  private final CardRepositoryPort cardRepository;
 
   @Autowired
-  public CategoryService(CardRepository cardRepository) {
+  public CategoryService(CardRepositoryPort cardRepository) {
     this.cardRepository = cardRepository;
   }
 
