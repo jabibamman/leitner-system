@@ -1,12 +1,16 @@
 package com.esgi.leitnersystem.infrastructure.dto;
 
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
 @NoArgsConstructor
 public class AnswerDTO {
     private boolean isValid;
+
+    public boolean getIsValid() {
+        return isValid;
+    }
+
+    public void setIsValid(boolean isValid) {
+        this.isValid = isValid;
+    }
 }

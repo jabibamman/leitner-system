@@ -13,14 +13,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CardRepository extends JpaRepository<Card, UUID> {
-  @Query("SELECT c FROM Card c WHERE c.tag IN :tags")
+  @Query("SELECT c FROM Card c WHERE LOWER(c.tag) IN :tags")
   List<Card> findByTagsIn(List<String> tags);
 
   Collection<Card> findAllByIdNotIn(List<UUID> cardIdsRevisedToday);
-
-  /*
-  @Query("SELECT c FROM Card c WHERE c.scheduledDate = :scheduledDate")
-  List<Card> findByScheduledDate(LocalDate scheduledDate);
-
-   */
 }

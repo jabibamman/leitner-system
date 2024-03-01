@@ -110,7 +110,7 @@ public class CardsController {
   @PatchMapping("/{cardId}/answer")
   @Operation(summary = "Provide answer for a card",
           description = "Handle the user's answer for a specific card. Mark the card as learned if the answer is correct.",
-          requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody( // Use fully qualified name for OpenAPI's RequestBody
+          requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                   description = "User's answer for the card.",
                   content = @Content(mediaType = "application/json",
                           schema = @Schema(implementation = AnswerDTO.class))),
@@ -122,7 +122,7 @@ public class CardsController {
   public ResponseEntity<Void> answerCard(@PathVariable UUID cardId,
                                          @RequestBody AnswerDTO answerDTO) {
     try {
-      cardService.processCardAnswer(cardId, answerDTO.isValid());
+      cardService.processCardAnswer(cardId, answerDTO.getIsValid());
       return ResponseEntity.noContent().build();
     } catch (CardNotFoundException e) {
       return ResponseEntity.notFound().build();

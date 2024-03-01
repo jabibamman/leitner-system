@@ -32,7 +32,7 @@ public class CardService {
   public CardService(CardRepository cardRepository, CardRevisionRepository cardRevisionRepository, CategoryService categoryService) {
     this.cardRepository = cardRepository;
     this.cardRevisionRepository = cardRevisionRepository;
-    this.categoryService = categoryService; // Initialise CategoryService
+    this.categoryService = categoryService;
   }
   public List<Card> fetchAllCards(Optional<List<String>> tags) {
     if (tags.isPresent() && !tags.get().isEmpty()) {
@@ -55,11 +55,10 @@ public class CardService {
 
   private static boolean isValidDateFormat(String date) {
     try {
-      // Tentative de parsing de la chaîne en LocalDate
       LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE);
-      return true; // La chaîne a un format de date valide
+      return true;
     } catch (Exception e) {
-      return false; // La chaîne n'a pas un format de date valide
+      return false;
     }
   }
 
