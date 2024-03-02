@@ -38,4 +38,9 @@ public class CardRevisionRepositoryAdapter
     return cardRevisionRepository.findTopByCardIdOrderByRevisionDateDesc(
         cardId);
   }
+
+  @Override
+  public CardRevision findByCardId(UUID revisionId) {
+    return cardRevisionRepository.findByCardId(revisionId);
+  }
 }

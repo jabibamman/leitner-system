@@ -80,4 +80,6 @@ public class CardService {
   private void recordCardRevision(Card card, boolean isValid) {
     revisionService.recordCardRevision(card, isValid);
   }
+
+  public void updateCard(Card currentCard) { cardRepository.save(currentCard); }
 }

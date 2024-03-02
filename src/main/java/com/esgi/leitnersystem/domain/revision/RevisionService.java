@@ -8,6 +8,7 @@ import com.esgi.leitnersystem.infrastructure.repository.CardRevisionRepository;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,6 +35,11 @@ public class RevisionService {
         .orElse(true);
   }
 
+  public CardRevision findLatestRevisionByCardId(UUID cardId) {
+    return cardRevisionRepository.findLatestRevisionByCardId(cardId).orElse(
+        null);
+  }
+
   public boolean shouldBeReviewed(Card card, CardRevision lastRevision,
                                   LocalDate currentDate) {
     var lastRevisionDate = LocalDate.parse(lastRevision.getRevisionDate(),
@@ -51,5 +57,9 @@ public class RevisionService {
         LocalDate.now().format(DateTimeFormatter.ISO_LOCAL_DATE);
     var revision = new CardRevision(card.getId(), formattedDate, isValid);
     cardRevisionRepository.save(revision);
+  }
+
+  public CardRevision findCardRevisionByCardId(UUID revisionId) {
+    return cardRevisionRepository.findByCardId(revisionId);
   }
 }
