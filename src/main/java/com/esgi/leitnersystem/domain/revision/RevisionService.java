@@ -9,7 +9,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,7 +36,8 @@ public class RevisionService {
   }
 
   public CardRevision findLatestRevisionByCardId(UUID cardId) {
-    return cardRevisionRepository.findLatestRevisionByCardId(cardId).orElse(null);
+    return cardRevisionRepository.findLatestRevisionByCardId(cardId).orElse(
+        null);
   }
 
   public boolean shouldBeReviewed(Card card, CardRevision lastRevision,

@@ -81,7 +81,5 @@ public class CardService {
     revisionService.recordCardRevision(card, isValid);
   }
 
-  public void updateCard(Card currentCard) {
-    cardRepository.save(currentCard);
-  }
+  public void updateCard(Card currentCard) { cardRepository.save(currentCard); }
 }
