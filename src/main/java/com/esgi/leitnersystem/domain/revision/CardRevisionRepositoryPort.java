@@ -12,4 +12,5 @@ public interface CardRevisionRepositoryPort {
 
   List<CardRevision> findByRevisionDate(LocalDate date);
   Optional<CardRevision> findLatestRevisionByCardId(UUID cardId);
+  CardRevision findByCardId(UUID revisionId);
 }

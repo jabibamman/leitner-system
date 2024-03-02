@@ -11,4 +11,6 @@ public interface CardRevisionRepository
   List<CardRevision> findByRevisionDate(String date);
 
   Optional<CardRevision> findTopByCardIdOrderByRevisionDateDesc(UUID cardId);
+
+  CardRevision findByCardId(UUID revisionId);
 }
