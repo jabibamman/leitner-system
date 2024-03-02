@@ -7,6 +7,7 @@ import java.util.UUID;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
+
 @Entity
 @Getter
 @Setter
@@ -19,10 +20,8 @@ public class Card {
   @GeneratedValue(generator = "UUID")
   @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
   @Column(updatable = false, nullable = false)
-  @Schema(description = "Generated identifier of a card",
-          example = "6c10ad48-2bb8-4e2e-900a-21d62c00c07b", required = true)
+  @Schema(description = "Generated identifier of a card", example = "6c10ad48-2bb8-4e2e-900a-21d62c00c07b", required = true)
   private UUID id;
-
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
   @Schema(

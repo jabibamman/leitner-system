@@ -35,7 +35,7 @@ public class CardsController {
   @Operation(
       summary = "Get all cards",
       description =
-          "Used to fetch every card with given tags. If no tags are provided, will fetch all cards.",
+          "Used to fetch every cards with given tags. If no tags are provided, will fetch all cards.",
       parameters =
       {
         @Parameter(
@@ -48,7 +48,8 @@ public class CardsController {
       responses =
       {
         @ApiResponse(responseCode = "200", description = "Successful operation",
-                     content = @Content(mediaType = "application/json"))
+                     content = @Content(mediaType = "application/json" ,
+                             schema = @Schema(type = "array", implementation = Card.class)))
       })
   public ResponseEntity<List<Card>>
   getAllCards(@RequestParam(required = false) List<String> tags) {
@@ -84,9 +85,9 @@ public class CardsController {
   @GetMapping("/quizz")
   @Tag(name = "Learning")
   @Operation(
-      summary = "Get cards for a quiz",
+      summary = "Cards for the day",
       description =
-          "Retrieve cards that are scheduled for the quiz on a specific date.",
+          "sed to fetch all cards for a quizz at a given date. If no date is provided, quizz will be for today.",
       parameters =
       {
         @Parameter(
@@ -99,7 +100,8 @@ public class CardsController {
       responses =
       {
         @ApiResponse(responseCode = "200", description = "Successful operation",
-                     content = @Content(mediaType = "application/json"))
+                     content = @Content(mediaType = "application/json",
+                             schema = @Schema(type = "array", implementation = Card.class)))
       })
   public ResponseEntity<List<Card>>
   getCardsForQuizz(@RequestParam(required = false) String date) {
@@ -115,10 +117,11 @@ public class CardsController {
   }
 
   @PatchMapping("/{cardId}/answer")
+  @Tag(name = "Learning")
   @Operation(
-      summary = "Provide answer for a card",
+      summary = "Answer a question",
       description =
-          "Handle the user's answer for a specific card. Mark the card as learned if the answer is correct.",
+          "Used to answer a question. Body indicate if user has answered correctly or not.",
       requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
           description = "User's answer for the card.",
           content = @Content(mediaType = "application/json",
@@ -127,8 +130,7 @@ public class CardsController {
       responses =
       {
         @ApiResponse(responseCode = "204",
-                     description = "Answer submitted successfully")
-        ,
+                     description = "Answer submitted successfully"),
             @ApiResponse(responseCode = "404", description = "Card not found"),
             @ApiResponse(responseCode = "400", description = "Bad request")
       })
