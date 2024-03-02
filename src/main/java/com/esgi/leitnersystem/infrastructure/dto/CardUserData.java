@@ -2,9 +2,14 @@ package com.esgi.leitnersystem.infrastructure.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Data
+@Schema(name = "CardUserData", description = "Data to create a new card")
+@AllArgsConstructor
+@RequiredArgsConstructor
 public class CardUserData {
 
   @NotBlank(message = "Question is mandatory")

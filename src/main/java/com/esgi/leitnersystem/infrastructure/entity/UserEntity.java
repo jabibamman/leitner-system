@@ -24,7 +24,7 @@ public class UserEntity {
           example = "6c10ad48-2bb8-4e2e-900a-21d62c00c07b", required = true)
   private UUID id;
 
-  @Column(nullable = false)
+  @Column(nullable = false, unique = true)
   @Schema(description = "The username of the user", example = "jimso91",
           required = true)
   private String username;
@@ -38,5 +38,9 @@ public class UserEntity {
     this.id = UUID.randomUUID();
     this.username = username;
     this.password = password;
+  }
+
+  public boolean verifyPassword(String password) {
+    return this.password.equals(password);
   }
 }
