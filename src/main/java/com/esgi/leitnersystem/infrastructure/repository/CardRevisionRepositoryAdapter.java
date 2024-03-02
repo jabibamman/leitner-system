@@ -43,5 +43,4 @@ public class CardRevisionRepositoryAdapter
   public CardRevision findByCardId(UUID revisionId) {
     return cardRevisionRepository.findByCardId(revisionId);
   }
-
 }

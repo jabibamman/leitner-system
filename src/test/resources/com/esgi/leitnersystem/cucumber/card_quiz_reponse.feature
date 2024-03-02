@@ -17,4 +17,3 @@ Feature: Answering Card Questions
     When The user answers the card's question with the category "SEVENTH"
     Then The answer is recorded, and the user can see if they answered correctly or not
     And The card should be promoted to "DONE" and not be asked again
-
