@@ -133,7 +133,8 @@ public class CardsController {
             @ApiResponse(responseCode = "400", description = "Bad request")
       })
   public ResponseEntity<Void>
-  answerCard(@PathVariable UUID cardId, @RequestBody @Valid AnswerDTO answerDTO) {
+  answerCard(@PathVariable UUID cardId,
+             @RequestBody @Valid AnswerDTO answerDTO) {
     try {
       cardService.processCardAnswer(cardId, answerDTO.getIsValid());
       return ResponseEntity.noContent().build();
