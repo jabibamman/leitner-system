@@ -47,9 +47,11 @@ public class CardsController {
       },
       responses =
       {
-        @ApiResponse(responseCode = "200", description = "Successful operation",
-                     content = @Content(mediaType = "application/json" ,
-                             schema = @Schema(type = "array", implementation = Card.class)))
+        @ApiResponse(
+            responseCode = "200", description = "Successful operation",
+            content = @Content(
+                mediaType = "application/json",
+                schema = @Schema(type = "array", implementation = Card.class)))
       })
   public ResponseEntity<List<Card>>
   getAllCards(@RequestParam(required = false) List<String> tags) {
@@ -99,9 +101,11 @@ public class CardsController {
       },
       responses =
       {
-        @ApiResponse(responseCode = "200", description = "Successful operation",
-                     content = @Content(mediaType = "application/json",
-                             schema = @Schema(type = "array", implementation = Card.class)))
+        @ApiResponse(
+            responseCode = "200", description = "Successful operation",
+            content = @Content(
+                mediaType = "application/json",
+                schema = @Schema(type = "array", implementation = Card.class)))
       })
   public ResponseEntity<List<Card>>
   getCardsForQuizz(@RequestParam(required = false) String date) {
@@ -130,7 +134,8 @@ public class CardsController {
       responses =
       {
         @ApiResponse(responseCode = "204",
-                     description = "Answer submitted successfully"),
+                     description = "Answer submitted successfully")
+        ,
             @ApiResponse(responseCode = "404", description = "Card not found"),
             @ApiResponse(responseCode = "400", description = "Bad request")
       })
