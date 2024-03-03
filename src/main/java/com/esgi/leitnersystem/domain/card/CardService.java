@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,11 +45,12 @@ public class CardService {
   }
 
   public List<Card> fetchAllCards(Optional<List<String>> tags) {
-    return tags.map(t -> t.stream()
-                    .map(String::toLowerCase)
-                    .collect(Collectors.toList()))
-            .map(cardRepository::findByTagsIn)
-            .orElseGet(cardRepository::findAll);
+    return tags
+        .map(
+            t
+            -> t.stream().map(String::toLowerCase).collect(Collectors.toList()))
+        .map(cardRepository::findByTagsIn)
+        .orElseGet(cardRepository::findAll);
   }
 
   public List<Card> getCardsForQuizz(LocalDate date) {

@@ -59,5 +59,4 @@ public class RevisionService {
     var revision = new CardRevision(card.getId(), formattedDate, isValid);
     cardRevisionRepository.save(revision);
   }
-
 }
