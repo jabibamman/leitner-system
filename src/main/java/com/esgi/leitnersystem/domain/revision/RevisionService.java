@@ -29,6 +29,7 @@ public class RevisionService {
     if (card.getCategory() == Category.DONE) {
       return false;
     }
+
     var lastRevision =
         cardRevisionRepository.findLatestRevisionByCardId(card.getId());
     return lastRevision.map(revision -> shouldBeReviewed(card, revision, date))
@@ -59,7 +60,4 @@ public class RevisionService {
     cardRevisionRepository.save(revision);
   }
 
-  public CardRevision findCardRevisionByCardId(UUID revisionId) {
-    return cardRevisionRepository.findByCardId(revisionId);
-  }
 }
