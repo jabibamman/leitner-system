@@ -1,7 +1,8 @@
-package com.esgi.leitnersystem.infrastructure.repository;
+package com.esgi.leitnersystem.infrastructure.repository.adapter;
 
 import com.esgi.leitnersystem.domain.card.Card;
 import com.esgi.leitnersystem.domain.card.CardRepositoryPort;
+import com.esgi.leitnersystem.infrastructure.repository.CardRepository;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;

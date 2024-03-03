@@ -1,9 +1,10 @@
-package com.esgi.leitnersystem.infrastructure.repository;
+package com.esgi.leitnersystem.infrastructure.repository.adapter;
 
 import com.esgi.leitnersystem.domain.card.Card;
 import com.esgi.leitnersystem.domain.card.CardRepositoryPort;
 import com.esgi.leitnersystem.domain.card.CardRevision;
 import com.esgi.leitnersystem.domain.revision.CardRevisionRepositoryPort;
+import com.esgi.leitnersystem.infrastructure.repository.CardRevisionRepository;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
