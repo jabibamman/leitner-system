@@ -2,12 +2,11 @@ package com.esgi.leitnersystem.infrastructure.repository.adapter;
 
 import com.esgi.leitnersystem.domain.card.Card;
 import com.esgi.leitnersystem.domain.card.CardRepositoryPort;
+import com.esgi.leitnersystem.infrastructure.repository.CardRepository;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
-import com.esgi.leitnersystem.infrastructure.repository.CardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

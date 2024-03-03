@@ -2,9 +2,8 @@ package com.esgi.leitnersystem.infrastructure.repository.adapter;
 
 import com.esgi.leitnersystem.domain.user.UserRepositoryPort;
 import com.esgi.leitnersystem.infrastructure.entity.UserEntity;
-import java.util.Optional;
-
 import com.esgi.leitnersystem.infrastructure.repository.UserRepository;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

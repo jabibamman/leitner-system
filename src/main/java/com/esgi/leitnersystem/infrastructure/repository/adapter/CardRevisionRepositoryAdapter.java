@@ -4,13 +4,12 @@ import com.esgi.leitnersystem.domain.card.Card;
 import com.esgi.leitnersystem.domain.card.CardRepositoryPort;
 import com.esgi.leitnersystem.domain.card.CardRevision;
 import com.esgi.leitnersystem.domain.revision.CardRevisionRepositoryPort;
+import com.esgi.leitnersystem.infrastructure.repository.CardRevisionRepository;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
-import com.esgi.leitnersystem.infrastructure.repository.CardRevisionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
