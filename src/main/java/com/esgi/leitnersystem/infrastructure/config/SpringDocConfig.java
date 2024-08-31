@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import static java.util.logging.Logger.getLogger;
+
 @Configuration
 @OpenAPIDefinition(
     info = @Info(
@@ -25,6 +27,7 @@ public class SpringDocConfig {
 
   @Bean
   public GroupedOpenApi publicApi() {
+    getLogger("LeitnerSystemApplication").info("Server is running on " + serverUrl + "/swagger-ui.html");
     return GroupedOpenApi.builder()
         .group(swaggerGroup)
         .pathsToMatch("/**")

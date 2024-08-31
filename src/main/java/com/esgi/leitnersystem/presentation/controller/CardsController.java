@@ -1,6 +1,7 @@
 package com.esgi.leitnersystem.presentation.controller;
 
 import com.esgi.leitnersystem.domain.card.Card;
+import com.esgi.leitnersystem.domain.card.CardResponse;
 import com.esgi.leitnersystem.domain.card.CardService;
 import com.esgi.leitnersystem.infrastructure.dto.AnswerDTO;
 import com.esgi.leitnersystem.infrastructure.dto.CardUserData;
@@ -17,6 +18,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -81,6 +84,39 @@ public class CardsController {
           .log(Level.SEVERE, "Error creating card", e);
       return ResponseEntity.badRequest().body("Error creating card: " +
                                               e.getMessage());
+    }
+  }
+
+  @PostMapping("many")
+  @Tag(name = "Cards")
+  @Operation(
+          summary = "Create many new cards",
+          description =
+                  "Used to create many new cards in the system. Many new cards will be present in the next quizz.")
+  @ApiResponse(responseCode = "201", description = "Created card",
+          content = @Content(mediaType = "application/json",
+                  schema = @Schema(implementation = CardUserData.class))
+  )
+  @ApiResponse(responseCode = "400", description = "Bad request",
+          content = @Content())
+  public ResponseEntity<List<CardResponse>>
+  createCards(@RequestBody @Valid List<CardUserData> cardsUserData) {
+    try {
+      List<Card> createdCards = cardService.createCards(cardsUserData);
+      List<CardResponse> cardResponses = createdCards.stream()
+              .map(card -> new CardResponse(card, null))
+              .collect(Collectors.toList());
+      return new ResponseEntity<>(cardResponses, HttpStatus.CREATED);
+
+    } catch (Exception e) {
+      Logger.getLogger(CardsController.class.getName())
+              .log(Level.SEVERE, "Error creating cards", e);
+
+      List<CardResponse> errorResponses = cardsUserData.stream()
+              .map(cardData -> new CardResponse(null, "Error creating card: " + e.getMessage()))
+              .collect(Collectors.toList());
+
+      return ResponseEntity.badRequest().body(errorResponses);
     }
   }
 
