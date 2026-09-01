@@ -21,11 +21,14 @@ public class CardControllerTests {
   @InjectMocks private CardsController cardsController;
 
   @Test
+  @SuppressWarnings("unchecked")
   public void getAllCards_ShouldReturnAllCards() {
     List<Card> expectedCards = Collections.singletonList(new Card());
-    when(cardService.fetchAllCards(Optional.empty())).thenReturn(expectedCards);
+    when(cardService.fetchAllCards(Optional.empty(), Optional.empty()))
+        .thenReturn(expectedCards);
 
-    List<Card> actualCards = cardsController.getAllCards(null).getBody();
+    List<Card> actualCards =
+        (List<Card>) cardsController.getAllCards(null, null).getBody();
 
     assertEquals(expectedCards, actualCards);
   }
@@ -42,47 +45,54 @@ public class CardControllerTests {
   }
 
   @Test
+  @SuppressWarnings("unchecked")
   public void getCardsForQuizz_WithValidDate_ShouldReturnCards() {
     String date = "2024-02-21";
     List<Card> expectedCards = Collections.singletonList(new Card());
-    when(cardService.getCardsForQuizz(LocalDate.parse(date)))
-        .thenReturn(expectedCards);
-
-    List<Card> actualCards = cardsController.getCardsForQuizz(date).getBody();
-
-    assertEquals(expectedCards, actualCards);
-  }
-
-  @Test
-  public void getCardsForQuizz_WithNullDate_ShouldReturnCards() {
-    List<Card> expectedCards = Collections.singletonList(new Card());
-    when(cardService.getCardsForQuizz(null)).thenReturn(expectedCards);
-
-    List<Card> actualCards = cardsController.getCardsForQuizz(null).getBody();
-
-    assertEquals(expectedCards, actualCards);
-  }
-
-  @Test
-  public void getCardsForQuizz_WithEmptyDate_ShouldReturnCards() {
-    List<Card> expectedCards = Collections.singletonList(new Card());
-    when(cardService.getCardsForQuizz(LocalDate.now()))
-        .thenReturn(expectedCards);
-
-    List<Card> actualCards = cardsController.getCardsForQuizz("").getBody();
-
-    assertEquals(expectedCards, actualCards);
-  }
-
-  @Test
-  public void getCardsForQuizz_WithInvalidDate_ShouldReturnNoCards() {
-    String invalidDate = "invalid-date";
-    List<Card> expectedCards = Collections.emptyList();
-    when(cardService.getCardsForQuizz(LocalDate.now()))
+    when(cardService.getCardsForQuizz(LocalDate.parse(date), Optional.empty()))
         .thenReturn(expectedCards);
 
     List<Card> actualCards =
-        cardsController.getCardsForQuizz(invalidDate).getBody();
+        (List<Card>) cardsController.getCardsForQuizz(date, null).getBody();
+
+    assertEquals(expectedCards, actualCards);
+  }
+
+  @Test
+  @SuppressWarnings("unchecked")
+  public void getCardsForQuizz_WithNullDate_ShouldReturnCards() {
+    List<Card> expectedCards = Collections.singletonList(new Card());
+    when(cardService.getCardsForQuizz(null, Optional.empty())).thenReturn(expectedCards);
+
+    List<Card> actualCards =
+        (List<Card>) cardsController.getCardsForQuizz(null, null).getBody();
+
+    assertEquals(expectedCards, actualCards);
+  }
+
+  @Test
+  @SuppressWarnings("unchecked")
+  public void getCardsForQuizz_WithEmptyDate_ShouldReturnCards() {
+    List<Card> expectedCards = Collections.singletonList(new Card());
+    when(cardService.getCardsForQuizz(LocalDate.now(), Optional.empty()))
+        .thenReturn(expectedCards);
+
+    List<Card> actualCards =
+        (List<Card>) cardsController.getCardsForQuizz("", null).getBody();
+
+    assertEquals(expectedCards, actualCards);
+  }
+
+  @Test
+  @SuppressWarnings("unchecked")
+  public void getCardsForQuizz_WithInvalidDate_ShouldReturnNoCards() {
+    String invalidDate = "invalid-date";
+    List<Card> expectedCards = Collections.emptyList();
+    when(cardService.getCardsForQuizz(LocalDate.now(), Optional.empty()))
+        .thenReturn(expectedCards);
+
+    List<Card> actualCards =
+        (List<Card>) cardsController.getCardsForQuizz(invalidDate, null).getBody();
 
     assertEquals(expectedCards, actualCards);
   }

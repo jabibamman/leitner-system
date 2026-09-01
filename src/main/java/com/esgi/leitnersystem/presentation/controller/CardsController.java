@@ -2,6 +2,7 @@ package com.esgi.leitnersystem.presentation.controller;
 
 import com.esgi.leitnersystem.domain.card.Card;
 import com.esgi.leitnersystem.domain.card.CardService;
+import com.esgi.leitnersystem.domain.card.CardType;
 import com.esgi.leitnersystem.infrastructure.dto.AnswerDTO;
 import com.esgi.leitnersystem.infrastructure.dto.CardUserData;
 import com.esgi.leitnersystem.infrastructure.exception.CardNotFoundException;
@@ -43,7 +44,14 @@ public class CardsController {
             description =
                 "Tags of cards to find. If not present, all cards will be found.",
             example = "tag1,tag2",
-            schema = @Schema(type = "array", implementation = String.class))
+            schema = @Schema(type = "array", implementation = String.class)),
+        @Parameter(
+            name = "type",
+            description =
+                "Nature des cartes a filtrer (ATOMIC ou ORAL). Si absent, "
+                + "les deux types sont renvoyes.",
+            example = "ATOMIC",
+            schema = @Schema(implementation = CardType.class))
       },
       responses =
       {
@@ -51,11 +59,22 @@ public class CardsController {
             responseCode = "200", description = "Successful operation",
             content = @Content(
                 mediaType = "application/json",
-                schema = @Schema(type = "array", implementation = Card.class)))
+                schema = @Schema(type = "array", implementation = Card.class))),
+        @ApiResponse(responseCode = "400",
+                     description = "Invalid type", content = @Content())
       })
-  public ResponseEntity<List<Card>>
-  getAllCards(@RequestParam(required = false) List<String> tags) {
-    List<Card> cards = cardService.fetchAllCards(Optional.ofNullable(tags));
+  public ResponseEntity<?>
+  getAllCards(@RequestParam(required = false) List<String> tags,
+              @RequestParam(required = false) String type) {
+    Optional<CardType> parsedType;
+    try {
+      parsedType = parseCardType(type);
+    } catch (IllegalArgumentException e) {
+      return ResponseEntity.badRequest().body(e.getMessage());
+    }
+
+    List<Card> cards =
+        cardService.fetchAllCards(Optional.ofNullable(tags), parsedType);
     return ResponseEntity.ok().body(cards);
   }
 
@@ -97,7 +116,16 @@ public class CardsController {
             description =
                 "Date of the quiz in the format 'YYYY-MM-DD'. If not provided, current date will be used.",
             example = "2024-02-21",
-            schema = @Schema(type = "string", format = "date"))
+            schema = @Schema(type = "string", format = "date")),
+        @Parameter(
+            name = "type",
+            description =
+                "Nature de la session (ATOMIC ou ORAL). Determinant : "
+                + "melanger les deux types dans une meme session fait "
+                + "disparaitre l'oral au profit du silencieux. Si absent, "
+                + "les deux types sont renvoyes.",
+            example = "ATOMIC",
+            schema = @Schema(implementation = CardType.class))
       },
       responses =
       {
@@ -105,19 +133,44 @@ public class CardsController {
             responseCode = "200", description = "Successful operation",
             content = @Content(
                 mediaType = "application/json",
-                schema = @Schema(type = "array", implementation = Card.class)))
+                schema = @Schema(type = "array", implementation = Card.class))),
+        @ApiResponse(responseCode = "400",
+                     description = "Invalid date or type", content = @Content())
       })
-  public ResponseEntity<List<Card>>
-  getCardsForQuizz(@RequestParam(required = false) String date) {
+  public ResponseEntity<?>
+  getCardsForQuizz(@RequestParam(required = false) String date,
+                   @RequestParam(required = false) String type) {
     LocalDate parsedDate;
-    if (date != null && !date.isEmpty()) {
-      parsedDate = LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE);
-    } else {
-      parsedDate = LocalDate.now();
+    try {
+      parsedDate = (date != null && !date.isEmpty())
+          ? LocalDate.parse(date, DateTimeFormatter.ISO_LOCAL_DATE)
+          : LocalDate.now();
+    } catch (java.time.format.DateTimeParseException e) {
+      return ResponseEntity.badRequest().body(
+          "Invalid date, expected format YYYY-MM-DD: " + date);
     }
 
-    List<Card> cards = cardService.getCardsForQuizz(parsedDate);
+    Optional<CardType> parsedType;
+    try {
+      parsedType = parseCardType(type);
+    } catch (IllegalArgumentException e) {
+      return ResponseEntity.badRequest().body(e.getMessage());
+    }
+
+    List<Card> cards = cardService.getCardsForQuizz(parsedDate, parsedType);
     return ResponseEntity.ok().body(cards);
+  }
+
+  private Optional<CardType> parseCardType(String type) {
+    if (type == null || type.isBlank()) {
+      return Optional.empty();
+    }
+    try {
+      return Optional.of(CardType.valueOf(type.trim().toUpperCase()));
+    } catch (IllegalArgumentException e) {
+      throw new IllegalArgumentException(
+          "Invalid type, expected ATOMIC or ORAL: " + type);
+    }
   }
 
   @PatchMapping("/{cardId}/answer")

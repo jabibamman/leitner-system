@@ -30,12 +30,14 @@ public class Card {
       example = "FIRST", required = true)
   private Category category;
 
-  @Column(nullable = false)
+  // 4000 plutot que la limite implicite de 255 : une carte orale porte une
+  // reponse de plusieurs phrases, pas une definition courte.
+  @Column(nullable = false, length = 4000)
   @Schema(description = "Question to be asked to the user during a quiz",
           example = "What is pair programming?", required = true)
   private String question;
 
-  @Column(nullable = false)
+  @Column(nullable = false, length = 4000)
   @Schema(description = "Expected answer for the question",
           example = "A practice to work in pairs on the same computer.",
           required = true)
@@ -44,4 +46,16 @@ public class Card {
   @Schema(description = "A tag to group cards on the same topic",
           example = "Teamwork")
   private String tag;
+
+  // Nullable en base : `ddl-auto=update` ne peut pas ajouter une colonne
+  // NOT NULL sans defaut sur une table qui contient deja des lignes. Une
+  // carte sans type est traitee comme ATOMIC par CardService.
+  @Enumerated(EnumType.STRING)
+  @Builder.Default
+  @Schema(description =
+              "Nature de la carte : ATOMIC (revision silencieuse) ou ORAL "
+              + "(a repondre a voix haute). Les deux suivent des cycles de "
+              + "Leitner independants.",
+          example = "ATOMIC")
+  private CardType type = CardType.ATOMIC;
 }
