@@ -81,8 +81,14 @@ an expiry date — a paid Render instance, or a free tier that does not expire
 
 ### 2. Create the web service
 
-- **Runtime**: Docker (the repository's `Dockerfile` is picked up automatically)
+- **Language / Runtime**: Docker
+- **Branch**: the one carrying the `Dockerfile`
+- **Region**: the same as the database, otherwise its internal URL is unreachable
+- **Dockerfile path**: `./Dockerfile` (the default)
 - **Health check path**: `/cards`
+
+The container listens on the port given by `PORT`, which Render sets to 10000;
+the `EXPOSE` instruction matches it, so nothing has to be configured.
 
 ### 3. Set the environment variables
 

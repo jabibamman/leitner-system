@@ -22,8 +22,10 @@ USER leitner
 
 COPY --from=build /build/target/*.jar app.jar
 
-# Render fournit le port a ecouter via PORT ; 8080 sert de valeur locale.
-ENV PORT=8080
-EXPOSE 8080
+# Render injecte PORT=10000 par defaut et se fie au EXPOSE pour router le
+# trafic : les deux doivent concorder. L'application lit PORT (voir
+# application.properties), et retombe sur 8080 hors conteneur.
+ENV PORT=10000
+EXPOSE 10000
 
 ENTRYPOINT ["java", "-jar", "/app/app.jar"]
