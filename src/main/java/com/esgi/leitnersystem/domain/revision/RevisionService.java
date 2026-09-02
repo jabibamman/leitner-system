@@ -8,6 +8,8 @@ import com.esgi.leitnersystem.infrastructure.repository.CardRevisionRepository;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,9 +38,27 @@ public class RevisionService {
         .orElse(true);
   }
 
+  // Variante utilisee par QuizService : `latestRevisions` est recuperee une
+  // seule fois pour toutes les cartes (voir findLatestRevisions), plutot que
+  // d'interroger la base carte par carte.
+  public boolean isEligibleForQuiz(Card card, LocalDate date,
+                                   Map<UUID, CardRevision> latestRevisions) {
+    if (card.getCategory() == Category.DONE) {
+      return false;
+    }
+
+    var lastRevision = Optional.ofNullable(latestRevisions.get(card.getId()));
+    return lastRevision.map(revision -> shouldBeReviewed(card, revision, date))
+        .orElse(true);
+  }
+
   public CardRevision findLatestRevisionByCardId(UUID cardId) {
     return cardRevisionRepository.findLatestRevisionByCardId(cardId).orElse(
         null);
+  }
+
+  public Map<UUID, CardRevision> findLatestRevisions() {
+    return cardRevisionRepository.findLatestRevisionPerCard();
   }
 
   public boolean shouldBeReviewed(Card card, CardRevision lastRevision,

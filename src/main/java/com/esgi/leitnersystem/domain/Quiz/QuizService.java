@@ -24,8 +24,12 @@ public class QuizService {
 
   public List<Card> getCardsDueForQuiz(LocalDate date) {
     List<Card> allCards = cardRepository.findAll();
+    // La derniere revision de chaque carte est recuperee en une seule
+    // requete plutot qu'une par carte : sans ca, cet appel declenche
+    // 1 + N requetes SQL (N = nombre de cartes).
+    var latestRevisions = revisionService.findLatestRevisions();
     return allCards.stream()
-        .filter(card -> revisionService.isEligibleForQuiz(card, date))
+        .filter(card -> revisionService.isEligibleForQuiz(card, date, latestRevisions))
         .collect(Collectors.toList());
   }
 }
