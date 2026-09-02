@@ -8,8 +8,11 @@ import com.esgi.leitnersystem.infrastructure.repository.CardRevisionRepository;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,5 +46,17 @@ public class CardRevisionRepositoryAdapter
   @Override
   public CardRevision findByCardId(UUID revisionId) {
     return cardRevisionRepository.findByCardId(revisionId);
+  }
+
+  @Override
+  public Map<UUID, CardRevision> findLatestRevisionPerCard() {
+    // Deux revisions peuvent partager la meme date (carte repondue deux fois
+    // le meme jour) : la requete renvoie alors les deux lignes pour cette
+    // carte. Laquelle des deux est gardee n'a pas d'importance ici, seule la
+    // date compte pour l'eligibilite au quiz.
+    return cardRevisionRepository.findLatestRevisionPerCard()
+        .stream()
+        .collect(Collectors.toMap(CardRevision::getCardId,
+                                  Function.identity(), (a, b) -> a));
   }
 }

@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
+@Table(indexes = @Index(name = "idx_card_revision_card_id", columnList = "cardId"))
 @Getter
 @Setter
 public class CardRevision {

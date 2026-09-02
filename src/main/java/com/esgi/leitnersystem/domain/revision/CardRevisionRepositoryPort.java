@@ -4,6 +4,7 @@ import com.esgi.leitnersystem.domain.card.CardRevision;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -13,4 +14,7 @@ public interface CardRevisionRepositoryPort {
   List<CardRevision> findByRevisionDate(LocalDate date);
   Optional<CardRevision> findLatestRevisionByCardId(UUID cardId);
   CardRevision findByCardId(UUID revisionId);
+
+  /** Derniere revision de chaque carte, en une seule requete. */
+  Map<UUID, CardRevision> findLatestRevisionPerCard();
 }
